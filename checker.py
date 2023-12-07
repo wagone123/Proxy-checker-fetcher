@@ -24,11 +24,11 @@ def fetch_proxies(api_url):
         response = requests.get(api_url)
         response.raise_for_status()  # Raise an exception for 4xx or 5xx HTTP status codes
         proxies = response.text.split('\n')
-        proxies = [proxy.strip() for proxy in proxies if proxy.strip()]  # Remove empty strings
+        proxies = {proxy.strip() for proxy in proxies if proxy.strip()}  # Use a set to remove duplicates
         return proxies
     except requests.exceptions.RequestException as e:
         print_error(f"[fetching] Error fetching proxies from {api_url}: {e}")
-        return []
+        return set()
 
 def check_proxy(proxy, threat_count):
     """Check the validity of a proxy by making a request to Google."""
@@ -51,7 +51,7 @@ def save_proxies_to_file(proxies, filename):
     try:
         with open(filename, 'w') as file:
             for proxy in proxies:
-                file.write(proxy[0] + '\n')
+                file.write(proxy + '\n')
         print_success(f"[save] Saved working proxies in {filename}")
     except Exception as e:
         print_error(f"[save] Error saving proxies to {filename}: {e}")
@@ -70,15 +70,16 @@ def main():
         "https://raw.githubusercontent.com/TheSpeedX/SOCKS-List/master/http.txt",
         "https://api.proxyscrape.com/v2/?request=displayproxies&protocol=http&timeout=10000&country=all&ssl=all&anonymity=all",
         "https://raw.githubusercontent.com/jetkai/proxy-list/main/online-proxies/txt/proxies.txt",
-        "https://raw.githubusercontent.com/MuRongPIG/Proxy-Master/main/http.txt",  
-        "https://raw.githubusercontent.com/prxchk/proxy-list/main/http.txt"
+        "https://raw.githubusercontent.com/MuRongPIG/Proxy-Master/main/http.txt",
+        "https://raw.githubusercontent.com/prxchk/proxy-list/main/http.txt",
+        "https://raw.githubusercontent.com/ErcinDedeoglu/proxies/main/proxies/http.txt"  # Additional source
     ]
 
-    all_proxies = []
+    all_proxies = set()
     for api_url in api_urls:
         print_info("[fetching] Getting proxies...")
         proxies_from_api = fetch_proxies(api_url)
-        all_proxies.extend(proxies_from_api)
+        all_proxies.update(proxies_from_api)
 
     total_proxies_fetched = len(all_proxies)
     print_info(f"[fetching] Found {total_proxies_fetched} proxies in total.")
