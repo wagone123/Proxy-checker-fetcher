@@ -20,6 +20,7 @@ Make sure you have Python installed. Install the required dependencies using:
 Clone the repository:
 
 ```git clone https://github.com/your-username/proxy-checker.git```
+
 ```cd proxy-checker```
 
 Run the script:
