@@ -13,21 +13,18 @@ Proxy Checker is a Python script that fetches proxy lists from various sources, 
 
 Make sure you have Python installed. Install the required dependencies using:
 
-```bash
-pip install -r requirements.txt
+```pip install -r requirements.txt```
 
 ## Usage
 
 Clone the repository:
 
-```bash
-git clone https://github.com/your-username/proxy-checker.git
-cd proxy-checker
+```git clone https://github.com/your-username/proxy-checker.git
+cd proxy-checker```
 
 Run the script:
 
-```bash
-python checker.py
+```python checker.py```
 
 Follow the on-screen prompts to set the number of threats, choose a filename, and monitor the progress.
 
