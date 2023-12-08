@@ -4,7 +4,8 @@ from bs4 import BeautifulSoup
 import concurrent.futures
 from datetime import datetime
 from tqdm import tqdm
-from colorama import Fore, Style  # Import colorama modules
+from colorama import Fore, Style  
+import time 
 
 def print_error(message):
     """Print error messages in red."""
@@ -23,9 +24,8 @@ def fetch_proxies(api_url):
     try:
         response = requests.get(api_url)
         response.raise_for_status()  # Raise an exception for 4xx or 5xx HTTP status codes
-        proxies = response.text.split('\n')
-        proxies = {proxy.strip() for proxy in proxies if proxy.strip()}  # Use a set to remove duplicates
-        return proxies
+        time.sleep(1)  # Introduce a delay of 1 second to allow the server to respond and load content
+        return {proxy.strip() for proxy in response.text.split('\n') if proxy.strip()}
     except requests.exceptions.RequestException as e:
         print_error(f"[fetching] Error fetching proxies from {api_url}: {e}")
         return set()
@@ -43,7 +43,6 @@ def check_proxy(proxy, threat_count):
         pass
     return proxy, False
 
-
 def save_proxies_to_file(proxies, filename):
     """Save proxies to a file."""
     if not filename.endswith(".txt"):
@@ -58,48 +57,70 @@ def save_proxies_to_file(proxies, filename):
     except Exception as e:
         print_error(f"[save] Error saving proxies to {filename}: {e}")
 
-   
+def display_menu():
+    print("\n"
+      "                                 " + Fore.LIGHTWHITE_EX + "  ╦ ╦╔═╗╦  ╔═╗             \n"
+      "                                 " + Fore.LIGHTCYAN_EX + "  ╠═╣║╣ ║  ╠═╝             \n"
+      "                                 " + Fore.LIGHTCYAN_EX + "  ╩ ╩╚═╝╩═╝╩                \n"
+      "             " + Fore.LIGHTCYAN_EX + "        ══╦═════════════════════════════════╦══\n"
+      "             " + Fore.LIGHTCYAN_EX + "╔═════════╩═════════════════════════════════╩═════════╗\n"
+      "             " + Fore.LIGHTCYAN_EX + "║ " + Fore.LIGHTWHITE_EX + "1" + Fore.LIGHTCYAN_EX + "        |" + Fore.LIGHTWHITE_EX + " Fetch and Check Proxies                  " + Fore.LIGHTCYAN_EX + "║\n"
+      "             " + Fore.LIGHTCYAN_EX + "║ " + Fore.LIGHTWHITE_EX + "2" + Fore.LIGHTCYAN_EX + "        |" + Fore.LIGHTWHITE_EX + " Exit                                     " + Fore.LIGHTCYAN_EX + "║\n"
+      "             " + Fore.LIGHTCYAN_EX + "╠═════════════════════════════════════════════════════╣\n"
+      "             " + Fore.LIGHTCYAN_EX + "║ " + Fore.LIGHTWHITE_EX + "CREATOR" + Fore.LIGHTCYAN_EX + "  |" + Fore.LIGHTWHITE_EX + " @W_A_G_O_N_E | t.me/IgaAlts              " + Fore.LIGHTCYAN_EX + "║\n"
+      "             " + Fore.LIGHTCYAN_EX + "║ " + Fore.LIGHTWHITE_EX + "YOU♥" + Fore.LIGHTCYAN_EX + "     |" + Fore.LIGHTWHITE_EX + " Please star the project :)               " + Fore.LIGHTCYAN_EX +  "║\n"
+      "             " + Fore.LIGHTCYAN_EX + "║ " + Fore.LIGHTWHITE_EX + "version" + Fore.LIGHTCYAN_EX + "  |" + Fore.LIGHTWHITE_EX + " Release v1.2                             " + Fore.LIGHTCYAN_EX +  "║\n"
+      "             " + Fore.LIGHTCYAN_EX + "╚═════════════════════════════════════════════════════╝\n")
 
- 
-   
 
 
-
-
-def main():
+def fetch_check_save_proxies():
     ascii_art_filename = 'ascii_art.txt'
     try:
         with open(ascii_art_filename, 'r') as ascii_art_file:
             ascii_art_content = ascii_art_file.read()
-            print(Fore.MAGENTA + ascii_art_content + Style.RESET_ALL)
+            print(Fore.GREEN + ascii_art_content + Style.RESET_ALL)
     except FileNotFoundError:
         print_error(f"Error: {ascii_art_filename} not found!")
 
     total_proxies_fetched = 0
     api_urls = [
-        "https://raw.githubusercontent.com/TheSpeedX/SOCKS-List/master/http.txt",
-        "https://api.proxyscrape.com/v2/?request=displayproxies&protocol=http&timeout=10000&country=all&ssl=all&anonymity=all",
-        "https://raw.githubusercontent.com/jetkai/proxy-list/main/online-proxies/txt/proxies.txt",
-        "https://raw.githubusercontent.com/MuRongPIG/Proxy-Master/main/http.txt",
-        "https://raw.githubusercontent.com/prxchk/proxy-list/main/http.txt",
-        "https://raw.githubusercontent.com/ErcinDedeoglu/proxies/main/proxies/http.txt"  # Additional source
+         "https://raw.githubusercontent.com/TheSpeedX/SOCKS-List/master/http.txt",
+         "https://api.proxyscrape.com/v2/?request=displayproxies&protocol=http&timeout=10000&country=all&ssl=all&anonymity=all",
+         "https://raw.githubusercontent.com/jetkai/proxy-list/main/online-proxies/txt/proxies.txt",
+         "https://raw.githubusercontent.com/MuRongPIG/Proxy-Master/main/http.txt",
+         "https://raw.githubusercontent.com/prxchk/proxy-list/main/http.txt",
+         "https://raw.githubusercontent.com/ErcinDedeoglu/proxies/main/proxies/http.txt",
+         "https://raw.githubusercontent.com/officialputuid/KangProxy/KangProxy/http/http.txt",
+         "https://raw.githubusercontent.com/Anonym0usWork1221/Free-Proxies/main/proxy_files/http_proxies.txt",
+         "https://raw.githubusercontent.com/Zaeem20/FREE_PROXIES_LIST/master/http.txt",
+         "https://raw.githubusercontent.com/proxy4parsing/proxy-list/main/http.txt",
+         "https://raw.githubusercontent.com/ALIILAPRO/Proxy/main/http.txt",
+         "https://raw.githubusercontent.com/vakhov/fresh-proxy-list/master/http.txt",
+         "https://raw.githubusercontent.com/yuceltoluyag/GoodProxy/main/raw.txt",
+         "https://raw.githubusercontent.com/zevtyardt/proxy-list/main/http.txt",
+         "https://raw.githubusercontent.com/aslisk/proxyhttps/main/https.txt"
+        
+
     ]
 
     all_proxies = set()
     for api_url in api_urls:
-        print_info("[fetching] Getting proxies...")
+        print_info(f"[fetching] Getting proxies from {api_url}...")
         proxies_from_api = fetch_proxies(api_url)
         all_proxies.update(proxies_from_api)
 
     total_proxies_fetched = len(all_proxies)
-    print_info(f"[fetching] Found {total_proxies_fetched} proxies in total.")
+    print_info(f"[fetching] Found {total_proxies_fetched} proxies in total. \n")
 
     try:
-        threat_count = int(input(Fore.YELLOW + "[checking] Please enter the amount of threats to use while checking: " + Style.RESET_ALL))
+        threat_count = int(input(Fore.LIGHTCYAN_EX+"╔═══"+Fore.LIGHTCYAN_EX+"[""root"+Fore.LIGHTGREEN_EX+"@"+Fore.LIGHTCYAN_EX+"User"+Fore.CYAN+"]"+Fore.LIGHTCYAN_EX+"\n╚══\x1b[38;2;0;255;189m> [amount of checking threats]: " + Style.RESET_ALL))
     except ValueError:
         print_error("Invalid input. Please enter a valid integer.")
         return
 
+    os.system('clear')
+    print(Fore.GREEN + ascii_art_content + Style.RESET_ALL)
     print_info("[checking] Checking the proxies...")
 
     working_proxies = []
@@ -119,13 +140,25 @@ def main():
         pbar.close()
 
     os.system('clear')
-    print(Fore.MAGENTA + ascii_art_content + Style.RESET_ALL)
+    print(Fore.GREEN + ascii_art_content + Style.RESET_ALL)
 
-    output_filename = input(Fore.BLUE + "[save] What should the file be named (working proxies without extension): " + Style.RESET_ALL)
+    output_filename = input(Fore.LIGHTCYAN_EX+"╔═══"+Fore.LIGHTCYAN_EX+"[""root"+Fore.LIGHTGREEN_EX+"@"+Fore.LIGHTCYAN_EX+"User"+Fore.CYAN+"]"+Fore.LIGHTCYAN_EX+"\n╚══\x1b[38;2;0;255;189m> [name of the file to save]: " + Style.RESET_ALL)
 
     save_proxies_to_file(working_proxies, output_filename)
 
-    input("Press any key to close ...")
+    input("Press any key to go to menu ...")
+
+def main_menu():
+    while True:
+        display_menu()
+        choice = input(Fore.LIGHTCYAN_EX+"╔═══"+Fore.LIGHTCYAN_EX+"[""root"+Fore.LIGHTGREEN_EX+"@"+Fore.LIGHTCYAN_EX+"User"+Fore.CYAN+"]"+Fore.LIGHTCYAN_EX+"\n╚══\x1b[38;2;0;255;189m> [choose an option]: " + Style.RESET_ALL)
+        if choice == "1":
+            fetch_check_save_proxies()
+        elif choice == "2":
+            print_info("Exiting the program. Goodbye!")
+            break
+        else:
+            print_error("Invalid choice. Please enter a valid option.")
 
 if __name__ == "__main__":
-    main()
+    main_menu()

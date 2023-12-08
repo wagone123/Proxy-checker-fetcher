@@ -39,6 +39,18 @@ Proxy lists are fetched from the following sources:
 4. [MuRongPIG Proxy Master](https://raw.githubusercontent.com/MuRongPIG/Proxy-Master/main/http.txt)
 5. [prxchk Proxy List](https://raw.githubusercontent.com/prxchk/proxy-list/main/http.txt)
 6. [ErcinDedeoglu Proxies](https://raw.githubusercontent.com/ErcinDedeoglu/proxies/main/proxies/http.txt)
+7. [officialputuid KangProxy](https://raw.githubusercontent.com/officialputuid/KangProxy/KangProxy/http/http.txt)
+8. [Anonym0usWork1221 Free-Proxies](https://raw.githubusercontent.com/Anonym0usWork1221/Free-Proxies/main/proxy_files/http_proxies.txt)
+9. [Zaeem20 FREE_PROXIES_LIST](https://raw.githubusercontent.com/Zaeem20/FREE_PROXIES_LIST/master/http.txt)
+10. [proxy4parsing Proxy List](https://raw.githubusercontent.com/proxy4parsing/proxy-list/main/http.txt)
+11. [ALIILAPRO Proxy](https://raw.githubusercontent.com/ALIILAPRO/Proxy/main/http.txt)
+12. [vakhov fresh-proxy-list](https://raw.githubusercontent.com/vakhov/fresh-proxy-list/master/http.txt)
+13. [yuceltoluyag GoodProxy](https://raw.githubusercontent.com/yuceltoluyag/GoodProxy/main/raw.txt)
+14. [zevtyardt Proxy List](https://raw.githubusercontent.com/zevtyardt/proxy-list/main/http.txt)
+15. [aslisk proxyhttps](https://raw.githubusercontent.com/aslisk/proxyhttps/main/https.txt)
+
+These sources collectively contribute to a robust and diverse pool of proxies for various applications.
+
 
 Feel free to add more sources to the `api_urls` list in the script.
 
