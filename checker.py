@@ -43,6 +43,7 @@ def check_proxy(proxy, threat_count):
         pass
     return proxy, False
 
+
 def save_proxies_to_file(proxies, filename):
     """Save proxies to a file."""
     if not filename.endswith(".txt"):
@@ -50,11 +51,20 @@ def save_proxies_to_file(proxies, filename):
     
     try:
         with open(filename, 'w') as file:
-            for proxy in proxies:
-                file.write(proxy + '\n')
+            for proxy, is_working in proxies:
+                if is_working:
+                    file.write(str(proxy) + '\n')
         print_success(f"[save] Saved working proxies in {filename}")
     except Exception as e:
         print_error(f"[save] Error saving proxies to {filename}: {e}")
+
+   
+
+ 
+   
+
+
+
 
 def main():
     ascii_art_filename = 'ascii_art.txt'
