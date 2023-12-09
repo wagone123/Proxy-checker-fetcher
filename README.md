@@ -19,9 +19,9 @@ Make sure you have Python installed. Install the required dependencies using:
 
 Clone the repository:
 
-```git clone https://github.com/wagone123/Proxy-checker-fetcher-```
+```git clone https://github.com/wagone123/Proxy-checker-fetcher```
 
-```cd proxy-checker```
+```cd proxy-checker-fetcher```
 
 Run the script:
 
